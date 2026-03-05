@@ -6,8 +6,8 @@ from models.SAR import MusashinoAssistant_SAR
 from models.RAG import MusashinoAssistant_RAG
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import os
-
+import asyncio
+import time
 app = FastAPI()
 
 app.add_middleware(
@@ -36,12 +36,24 @@ async def read_index():
 @app.post("/search")
 async def search(request: SearchRequest):
     try:
-        user_query = request.query
+        # 1. Start the timer
+        start_time = time.perf_counter()
         
-        # Get answers from both models
-        answer_SAR = assistant_SAR.get_answer(user_query)
-        answer_RAG = assistant_RAG.get_answer(user_query)
+        user_query = request.query
+        loop = asyncio.get_event_loop()
 
+        # 2. Kick off concurrent tasks
+        sar_task = loop.run_in_executor(None, assistant_SAR.get_answer, user_query)
+        rag_task = loop.run_in_executor(None, assistant_RAG.get_answer, user_query)
+
+        # 3. Wait for both to finish
+        answer_SAR, answer_RAG = await asyncio.gather(sar_task, rag_task)
+
+        # 4. Calculate total duration
+        end_time = time.perf_counter()
+        duration = end_time - start_time
+        print('response time:', duration)
+        
         return {
             "status": "success",
             "query": user_query,

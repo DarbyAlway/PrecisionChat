@@ -46,11 +46,13 @@ class MusashinoAssistant_SAR:
         user_prompt = f"【参考資料】:\n{reference_text}\n\nユーザーの質問: {user_query}"
 
         response = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0
+            temperature=0,
+            max_tokens=200
+
         )
         return response.choices[0].message.content
