@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGcompare</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo"> Musashino Assistant</div>
+            <div class="search-container">
+                <input type="text" id="queryInput" placeholder="Ask about Musashino">
+                <button id="compareBtn">Submit</button>
+            </div>
+        </header>
+
+        <main class="comparison-grid">
+            <div class="card" id="sarCard">
+                <div class="card-header">
+                    <span class="dot blue"></span> GPT 4 + SAR
+                </div>
+                <div class="card-content" id="sarResult">
+                    <p class="placeholder">Results will appear here...</p>
+                </div>
+            </div>
+
+            <div class="card" id="ragCard">
+                <div class="card-header">
+                    <span class="dot yellow"></span> GPT 4 + RAG
+                </div>
+                <div class="card-content" id="ragResult">
+                    <p class="placeholder">Results will appear here...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

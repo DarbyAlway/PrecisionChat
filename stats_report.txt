@@ -1,0 +1,8 @@
+========================================
+STATISTICS REPORT FROM QUESTION GENERATION
+Execution time: 3554.71 seconds
+----------------------------------------
+Total Prompt Tokens:     278847
+Total Completion Tokens: 154912
+Total Combined Tokens:   433759
+========================================

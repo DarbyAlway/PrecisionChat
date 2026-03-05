@@ -1,0 +1,121 @@
+:root {
+    --bg-color: #0d1117;
+    --card-bg: #161b22;
+    --border-color: #30363d;
+    --text-main: #c9d1d9;
+    --text-dim: #8b949e;
+    --accent-blue: #58a6ff;
+    --accent-yellow: #f1e05a;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    padding: 40px 0;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    background: #0d1117;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 0 15px rgba(88, 166, 255, 0.1);
+}
+
+input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    outline: none;
+}
+
+button {
+    background: #238636;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 300px;
+}
+
+.card-header {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.blue { background-color: var(--accent-blue); }
+.yellow { background-color: var(--accent-yellow); }
+
+.placeholder { color: var(--text-dim); font-style: italic; }
+
+/* Styling for the converted links */
+.card-content a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    word-break: break-all; /* Prevents long URLs from breaking the card layout */
+}
+
+.card-content a:hover {
+    text-decoration: underline;
+    filter: brightness(1.2);
+}
+
+.loading {
+    color: var(--text-dim);
+    font-style: italic;
+    animation: fade 1.5s infinite;
+}
+
+@keyframes fade {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
