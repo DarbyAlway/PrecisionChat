@@ -25,6 +25,12 @@ assistant_RAG = MusashinoAssistant_RAG()
 # Ensure your folder is named 'frontend'
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
+def detect_language(text: str):
+    for c in text:
+        if '\u3040' <= c <= '\u30ff' or '\u4e00' <= c <= '\u9faf':
+            return "japanese"
+    return "english"
+
 class SearchRequest(BaseModel):
     query: str
 
@@ -32,36 +38,39 @@ class SearchRequest(BaseModel):
 @app.get("/")
 async def read_index():
     return FileResponse('frontend/index.html')
-
 @app.post("/search")
 async def search(request: SearchRequest):
     try:
-        # 1. Start the timer
         start_time = time.perf_counter()
-        
+
         user_query = request.query
+
+        # Detect language automatically
+        language = detect_language(user_query)
+
+        # Append language instruction to query
+        enhanced_query = f"[Answer in {language}] {user_query} only do not answer in another language than {language}"
+
         loop = asyncio.get_event_loop()
 
-        # 2. Kick off concurrent tasks
-        sar_task = loop.run_in_executor(None, assistant_SAR.get_answer, user_query)
-        rag_task = loop.run_in_executor(None, assistant_RAG.get_answer, user_query)
+        sar_task = loop.run_in_executor(None, assistant_SAR.get_answer, enhanced_query)
+        rag_task = loop.run_in_executor(None, assistant_RAG.get_answer, enhanced_query)
 
-        # 3. Wait for both to finish
         answer_SAR, answer_RAG = await asyncio.gather(sar_task, rag_task)
 
-        # 4. Calculate total duration
         end_time = time.perf_counter()
         duration = end_time - start_time
-        print('response time:', duration)
-        
+        print("response time:", duration)
+
         return {
             "status": "success",
             "query": user_query,
+            "language_detected": language,
             "answer_SAR": answer_SAR,
             "answer_RAG": answer_RAG
         }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
